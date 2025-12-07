@@ -219,7 +219,29 @@ elseif(WIN32)
     set(CPACK_NSIS_MENU_LINKS
         "nwss-cnc.exe" "${APP_NAME}"
     )
+
+else() # Linux / other UNIX systems
+    # Create the executable (normal GUI app)
+    add_executable(nwss-cnc
+        ${GUI_SOURCES}
+        ${GUI_HEADERS}
+        ${RESOURCES}
+    )
+
+    # Install the binary to /usr/local/bin
+    install(TARGETS nwss-cnc RUNTIME DESTINATION bin)
+
+    # Optional: install resources for Linux packaging
+    install(FILES ${APP_ICON_LINUX} DESTINATION share/icons/hicolor/256x256/apps/)
+    install(FILES ${RESOURCES} DESTINATION share/nwss-cnc/)
+
+    # Optional desktop entry (for menu/app launcher)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/linux/nwss-cnc.desktop
+            DESTINATION share/applications)
 endif()
+
+
+
 
 target_link_libraries(nwss-cnc PRIVATE
     nwss-cnc-core
@@ -242,6 +264,13 @@ set(CPACK_PACKAGE_VENDOR "${APP_COMPANY}")
 set(CPACK_PACKAGE_CONTACT "${APP_COMPANY} <info@nwss.org>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "NWSS CNC - SVG to G-Code Converter")
 set(CPACK_PACKAGE_VERSION "${APP_VERSION}")
+
+# Linux package formats
+set(CPACK_GENERATOR "TGZ;DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${APP_COMPANY}")
+
+include(CPack)
+
 
 if(WIN32)
     add_custom_target(package_for_github

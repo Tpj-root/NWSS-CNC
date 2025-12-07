@@ -657,6 +657,7 @@ The input geometry has overlapping or self-intersecting paths:
 # Clone repository
 git clone https://github.com/nwss/nwss-cnc.git
 cd nwss-cnc
+git submodule update --init --recursive
 
 # Create build directory
 mkdir build && cd build

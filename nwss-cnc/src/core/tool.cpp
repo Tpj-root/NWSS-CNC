@@ -17,6 +17,7 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <cmath>
 #endif
 
 namespace nwss {
